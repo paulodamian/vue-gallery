@@ -9,6 +9,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('user-token') || '',
     authStatus: '',
     loading: '',
+    currentBatch: [],
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
@@ -30,6 +31,9 @@ export default new Vuex.Store({
       state.authStatus = '';
       state.token = '';
     },
+    SAVE_CURRENTBATCH: (state, batch) => {
+      state.currentBatch = batch;
+    },
     LOADING_START: (state) => {
       state.loading = true;
     },
@@ -41,23 +45,23 @@ export default new Vuex.Store({
     AUTH_REQUEST: ({ commit }, data) => {
       return new Promise((resolve, reject) => {
         commit('AUTH_REQUEST');
-        axios({ 
-          method: 'POST', 
-          url: `${process.env.VUE_APP_API_BASE_URL}/auth`, 
-          data, 
+        axios({
+          method: 'POST',
+          url: `${process.env.VUE_APP_API_BASE_URL}/auth`,
+          data,
           headers: {
-            'Content-Type':'application/json'
+            'Content-Type': 'application/json'
           }
         }).then(resp => {
-            const token = resp.data.token;
-            localStorage.setItem('user-token', token);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            commit('AUTH_SUCCESS', token);
-            resolve(resp);
+          const token = resp.data.token;
+          localStorage.setItem('user-token', token);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          commit('AUTH_SUCCESS', token);
+          resolve(resp);
         }).catch(err => {
-            commit('AUTH_ERROR', err);
-            localStorage.removeItem('user-token');
-            reject(err);
+          commit('AUTH_ERROR', err);
+          localStorage.removeItem('user-token');
+          reject(err);
         });
       })
     },
@@ -65,6 +69,9 @@ export default new Vuex.Store({
       localStorage.removeItem('user-token');
       axios.defaults.headers.common['Authorization'] = '';
       commit('AUTH_LOGOUT');
+    },
+    SAVE_CURRENTBATCH: ({ commit }, batch) => {
+      commit('SAVE_CURRENTBATCH', batch);
     },
     LOADING_START: ({ commit }) => {
       window.scrollTo(0, 0);

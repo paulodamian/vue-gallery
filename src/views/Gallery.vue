@@ -35,24 +35,27 @@ export default {
     this.fetchData();
   },
   beforeRouteUpdate(to, from, next) {
-      this.page = parseInt(to.params.page) || 1;
-      this.fetchData();
-      next();
+    this.page = parseInt(to.params.page) || 1;
+    this.fetchData();
+    next();
   },
   methods: {
     fetchData() {
-        this.$store.dispatch("LOADING_START");
-        axios.get(`${process.env.VUE_APP_API_BASE_URL}/images?page=${this.page}`).then(response => {
-            this.$store.dispatch("LOADING_STOP");
-            this.images = response.data.pictures;
-            this.hasMorePages = response.data.hasMore;
+      this.$store.dispatch("LOADING_START");
+      axios
+        .get(`${process.env.VUE_APP_API_BASE_URL}/images?page=${this.page}`)
+        .then(response => {
+          this.$store.dispatch("LOADING_STOP");
+          this.$store.dispatch("SAVE_CURRENTBATCH", response.data.pictures);
+          this.images = response.data.pictures;
+          this.hasMorePages = response.data.hasMore;
         });
     },
     goToPrevPage() {
-        this.$router.push(`/page/${this.page - 1}`);
+      this.$router.push(`/page/${this.page - 1}`);
     },
     goToNextPage() {
-        this.$router.push(`/page/${this.page + 1}`);
+      this.$router.push(`/page/${this.page + 1}`);
     }
   }
 };

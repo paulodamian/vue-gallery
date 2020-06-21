@@ -6,20 +6,20 @@
 </template>
 
 <script>
-import ImgModal from '@/components/ImgModal.vue'
+import ImgModal from "@/components/ImgModal.vue";
 
 export default {
-  name: 'ImgCard',
+  name: "ImgCard",
   components: {
     ImgModal
   },
   props: {
-    img: {},
+    img: {}
   },
   data() {
     return {
       showModal: false
-    }
+    };
   },
   methods: {
     imgClick() {
@@ -29,7 +29,7 @@ export default {
       this.showModal = false;
     }
   }
-}
+};
 </script>
 
 <style scoped lang="scss">
