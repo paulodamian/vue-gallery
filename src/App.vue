@@ -1,28 +1,27 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  created: function () {
+    const app = this;
+    axios.interceptors.response.use(undefined, function (err) {
+      if (err.response.status === 401 && err.response.config && !err.response.config.__isRetryRequest) {
+        app.$store.dispatch('AUTH_LOGOUT');
+        app.$router.push('/login');
+      }
+      return Promise.reject(err.message);
+    });
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+
 </style>
