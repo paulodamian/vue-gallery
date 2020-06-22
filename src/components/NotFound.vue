@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="message">404 | These are not the drones you are looking for ...</div>
+    <div class="message">404 | These are not the droids you are looking for ...</div>
   </div>
 </template>
 
