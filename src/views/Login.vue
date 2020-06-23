@@ -21,7 +21,7 @@ export default {
       const data = { apiKey: apikey };
       await this.$store.dispatch("AUTH_REQUEST", data);
       if (this.$store.getters.isAuthenticated) {
-        this.$router.push("/page/1");
+        this.$router.push("/");
       }
     },
     doingAuth() {

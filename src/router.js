@@ -20,7 +20,7 @@ const isNotAuthenticated = (to, from, next) => {
     next();
     return;
   }
-  next('/page/1');
+  next('/');
 }
 
 const logout = (to, from, next) => {
@@ -46,7 +46,8 @@ export default new Router({
       beforeEnter: logout,
     },
     {
-      path: '/page/:page',
+      path: '/page/:page(\\d+)?',
+      alias: '/',
       name: 'gallery',
       component: Gallery,
       beforeEnter: isAuthenticated,
